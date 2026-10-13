@@ -1,11 +1,29 @@
 * text=auto eol=lf
 
+# Keep source-aware diffs readable.
 *.blade.php diff=html
 *.css diff=css
 *.html diff=html
+*.js diff=javascript
+*.json diff=json
 *.md diff=markdown
 *.php diff=php
+*.ts diff=javascript
+*.vue diff=html
+*.xml diff=xml
 
+# Omit repository maintenance files from source archives.
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Binary files and committed local database snapshot.
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.sqlite binary
+*.sqlite3 binary
+*.webp binary
+/my_car_rental binary
