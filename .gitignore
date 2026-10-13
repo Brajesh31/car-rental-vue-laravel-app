@@ -1,19 +1,29 @@
-/.phpunit.cache
+/vendor
 /node_modules
 /public/build
 /public/hot
 /public/storage
+
+# Laravel local runtime and generated artifacts
 /storage/*.key
 /storage/pail
-/vendor
+/bootstrap/cache/*.php
+/database/*.sqlite
+/database/*.sqlite-*
+/database/*.sqlite3
+/database/*.db
+.phpunit.cache
+.phpunit.result.cache
+
+# Environment files: preserve only the checked-in template
 .env
+.env.*
+!.env.example
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
+
+# Local tools, logs, and editor state
+npm-debug.log*
 yarn-error.log
 /auth.json
 /.fleet
@@ -21,3 +31,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+.DS_Store
+Thumbs.db
