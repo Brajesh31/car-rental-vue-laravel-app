@@ -1,0 +1,28 @@
+name: 💬 Question
+description: Ask a project usage or implementation question
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: "Please search existing documentation and discussions before opening a question. Never include credentials or personal data."
+  - type: textarea
+    id: context
+    attributes:
+      label: What are you trying to do?
+      description: Describe the goal and relevant project area.
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: PHP, Laravel, Node, npm and operating system versions.
+    validations:
+      required: false
