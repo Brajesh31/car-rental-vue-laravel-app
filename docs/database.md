@@ -40,3 +40,26 @@ Use migrations as the source for intentional schema changes. Do not edit databas
 - The date conflict query does not exclude cancelled rentals.
 - Car or user deletion cascades to rentals, which should be considered before removing records.
 - Database/session snapshots and uploaded images need explicit backup, retention, access, and deletion rules before production.
+
+## Entity relationship diagram
+
+~~~mermaid
+erDiagram
+  USER ||--o{ RENTAL : books
+  CAR ||--o{ RENTAL : reserved_for
+~~~
+
+## Booking integrity flow
+
+~~~mermaid
+flowchart TD
+  A[Receive car and date range] --> B[Validate request]
+  B --> C[Find overlapping rentals]
+  C --> D{Conflict?}
+  D -->|Yes| E[Reject]
+  D -->|No| F[Calculate price from persisted car rate]
+  F --> G[Transactional availability recheck]
+  G --> H[Persist rental]
+~~~
+
+The current implementation does not meet this target flow: its booking path trusts a client-supplied total and does not lock/serialize date availability. The overlap query includes cancelled records. These are remediation items, not claims about current behavior.
