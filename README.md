@@ -259,7 +259,7 @@ The [documentation hub](docs/README.md) contains project overview, feature inven
 
 ## 🛡️ Security and privacy
 
-Before deployment, address the findings in [Security Review](docs/SECURITY_REVIEW.md), especially server-side role assignment, CSRF protection, dashboard data exposure, rental ownership, price tampering, and booking concurrency. Review tracked DB snapshots and the seeder's hard-coded administrator account. Do not publish `.env`, session cookies, passwords, private customer records, or booking addresses.
+Before deployment, address the findings in [Security Review](docs/SECURITY_REVIEW.md), especially server-side role assignment, CSRF protection, dashboard data exposure, rental ownership, price tampering, and booking concurrency. Populated local database files and SQL exports have been removed from the repository because they are not suitable public fixtures. Do not reintroduce live data, `.env` files, session cookies, passwords, private customer records, or booking addresses. Review the seeder's hard-coded administrator account before any production use.
 
 See [SECURITY.md](SECURITY.md) for private reporting instructions.
 
