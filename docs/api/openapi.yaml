@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: SwiftRide Web Application Routes
+  version: 1.0.0-draft
+  description: |
+    Documentation draft for the Laravel web application. This is not a separately deployed REST API.
+    Most routes return redirects or Inertia page responses. Only the availability checker returns JSON.
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+paths:
+  /:
+    get:
+      summary: Home page
+      responses:
+        '200': { description: Inertia HomePage response }
+  /contact:
+    get:
+      summary: Contact page
+      responses:
+        '200': { description: Inertia Contact page }
+  /login:
+    get:
+      summary: Login page
+      responses:
+        '200': { description: Inertia LoginPage response }
+    post:
+      summary: Authenticate with email and password
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        '302': { description: Redirect after login or authentication error }
+  /user/create:
+    get:
+      summary: Signup page
+      responses:
+        '200': { description: Inertia SignupPage response }
+    post:
+      summary: Create user account
+      description: Current implementation accepts role from request. This must be restricted server-side before public use.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [name, email, role, password]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                role: { type: string }
+                password: { type: string, format: password }
+                password_confirmation: { type: string, format: password }
+      responses:
+        '302': { description: Redirect to login or return validation error }
+  /check-availability:
+    post:
+      summary: Check car date availability
+      description: Current endpoint validates car/date values and returns JSON availability plus calculated total when no conflict is found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [car_id, start_date, end_date]
+              properties:
+                car_id: { type: integer }
+                start_date: { type: string, format: date }
+                end_date: { type: string, format: date }
+      responses:
+        '200':
+          description: Availability result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available: { type: boolean }
+                  total_cost: { type: number, format: double }
+  /cars/{car}/book:
+    get:
+      summary: Show car booking form
+      parameters:
+        - in: path
+          name: car
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Inertia booking form }
+    post:
+      summary: Submit car booking
+      description: Current controller stores client-supplied total_cost and must be fixed to calculate price server-side.
+      parameters:
+        - in: path
+          name: car
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [car_id, start_date, end_date]
+              properties:
+                car_id: { type: integer }
+                start_date: { type: string, format: date }
+                end_date: { type: string, format: date }
+                total_cost: { type: number, description: Untrusted browser-supplied value in current implementation }
+      responses:
+        '302': { description: Redirect after booking or validation failure }
+  /rentals/{rentalId}/cancel:
+    put:
+      summary: Cancel a rental
+      description: Current route permits user/admin group but handler does not verify rental ownership.
+      parameters:
+        - in: path
+          name: rentalId
+          required: true
+          schema: { type: integer }
+      responses:
+        '302': { description: Redirect with flash result }
+  /dashboard:
+    get:
+      summary: Dashboard page
+      description: Current controller passes all users and cars to page props. Restrict user data to admin.
+      responses:
+        '200': { description: Inertia DashboardPage response }
