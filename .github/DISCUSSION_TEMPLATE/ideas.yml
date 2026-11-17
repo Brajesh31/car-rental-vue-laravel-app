@@ -1,0 +1,22 @@
+title: "💡 Idea: "
+body:
+  - type: markdown
+    attributes:
+      value: "Use this template for exploratory ideas. Do not share secrets or personal data."
+  - type: textarea
+    attributes:
+      label: Problem
+      description: What user problem should be solved?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed approach
+      description: Describe the idea without assuming it is already approved.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives and trade-offs
+    validations:
+      required: false
