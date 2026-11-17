@@ -1,0 +1,114 @@
+{
+  "info": {
+    "_postman_id": "swiftride-car-rental-local-examples",
+    "name": "SwiftRide Car Rental (Local Web Requests)",
+    "description": "Local examples only. The application uses Laravel sessions and Inertia, not bearer JWT. CSRF is currently disabled in source and must be restored before deployment. Use synthetic records only.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "carId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Public pages",
+      "item": [
+        {
+          "name": "Home",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/"
+          }
+        },
+        {
+          "name": "About",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/about"
+          }
+        },
+        {
+          "name": "Contact page",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/contact"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Availability",
+      "item": [
+        {
+          "name": "Check car availability (synthetic dates)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"car_id\": 1,\n  \"start_date\": \"2026-12-10\",\n  \"end_date\": \"2026-12-12\"\n}"
+            },
+            "url": "{{baseUrl}}/check-availability"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication (session based)",
+      "item": [
+        {
+          "name": "Login page",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/login"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "customer@example.test"
+                },
+                {
+                  "key": "password",
+                  "value": "DO_NOT_REUSE_THIS_EXAMPLE"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/login"
+          }
+        }
+      ]
+    }
+  ]
+}
