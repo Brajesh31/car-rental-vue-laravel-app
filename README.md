@@ -1,109 +1,286 @@
-# SwiftRide Car Rental
+# 🚗 SwiftRide | Car Rental Management Application
 
-A Laravel 12 car-rental web application with a Vue 3 and Inertia.js interface. The project includes account registration and login, car administration, rental date availability checks, booking records, role-based route groups, and email confirmation scaffolding.
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="Vue 3">
+  <img src="https://img.shields.io/badge/Inertia.js-2-9553E9?style=for-the-badge" alt="Inertia 2">
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6">
+  <img src="https://img.shields.io/badge/License-MIT-2E8B57?style=for-the-badge" alt="MIT License">
+</p>
 
-This repository needs security and data cleanup before any public or production deployment. The current code disables CSRF validation for every route, accepts a role supplied by public signup, exposes user records to every authenticated dashboard user, and allows a signed-in user to cancel a rental without checking ownership. It also tracks a SQLite database and a SQL dump containing user/session records. Review SECURITY.md before running or deploying the application.
+<p align="center"><strong>A Laravel 12 + Inertia + Vue 3 web application prototype for car listings, role-based administration, and rental booking workflows.</strong></p>
 
-## Stack
+---
 
-- PHP 8.2 or later and Laravel 12
-- MySQL or SQLite through Laravel's database layer
-- Vue 3, Inertia.js 2, and Vite
-- Bootstrap 5, Tailwind CSS 4 Vite integration, and Vue Toastification
-- PHPUnit through Laravel's test runner
-- Laravel mail, queue, session, and scheduled-command infrastructure
+## 📌 Project overview
 
-Exact dependency constraints are in composer.json and package.json; resolved dependencies are recorded in composer.lock and package-lock.json.
+SwiftRide is a full-stack Laravel application with an Inertia.js and Vue 3 interface. Laravel owns web routing, authentication, authorization middleware, validation, Eloquent models, file storage, mail, and scheduled commands. Inertia delivers Vue pages through a Laravel Blade root view; Vite builds the browser assets.
 
-## Current application areas
+This is not a separately deployed Vue SPA backed by a versioned JSON API. Most routes are Laravel web routes and return redirects or Inertia pages. The availability checker is a JSON response.
 
-- Public home, about, contact, login, and signup pages.
-- Admin car listing, creation, editing, viewing, and deletion.
-- User/admin dashboard and rental listing.
-- Car rental date availability checks and booking creation.
-- Rental status updates and cancellation.
-- Booking confirmation email template and status automation scaffolding.
+> 🚨 **Production warning:** The inspected code contains serious security and booking-integrity issues. Public signup accepts a role from the request, CSRF checks are globally disabled, the dashboard sends all user records to both users and admins, rental cancellation does not check ownership, booking stores a browser-supplied total, availability and booking are not atomic, and the scheduler name does not match the registered command signature. Do not use real customer records or deploy publicly until these findings are fixed and tested.
 
-The feature set is incomplete. Contact submission has no POST route; rental detail and edit controller methods are stubs; the scheduled command name does not match the registered command; the car deletion action uses GET; and email delivery depends on the configured mailer. Read the technical docs for route-level details.
+Read [Security Policy](SECURITY.md) and [Security Review](docs/SECURITY_REVIEW.md) before using this project outside an isolated development environment.
 
-## Requirements
+## 🎯 Current feature inventory
 
-- PHP 8.2+, Composer, Node.js and npm
-- A database supported by the configured Laravel connection
-- PHP extensions required by Laravel and the selected database driver
-- A mail transport for real email delivery
+| Area | Current source behavior | Important limitation |
+|---|---|---|
+| 🏠 Public pages | Home, about, contact page rendering | Contact form POST route is missing |
+| 👤 Accounts | Signup, login, admin user management | Signup role is client-controlled |
+| 🛡️ Roles | `admin` and `user` middleware groups | Dashboard data is not scoped by role |
+| 🚘 Car catalogue | Admin list/create/show/edit/update/delete routes | Delete currently uses GET |
+| 📅 Rental workflow | Availability check, booking, listing, cancel, status update | Price tampering and concurrency risks |
+| ✉️ Email | Booking confirmation mail class and template | Sent synchronously with configured mailer |
+| ⏱️ Automation | Command intended to update rental states | Scheduler/command signature mismatch |
+| 🧩 Frontend | Vue 3 + Inertia pages and shared components | Some frontend/backend helpers are incomplete |
 
-## Local setup
+### ⚠️ Confirmed implementation gaps
+- Public signup persists a caller-provided role field. Role assignment must be server-controlled.
+- `bootstrap/app.php` excludes all URI paths from CSRF validation.
+- Dashboard controller retrieves all users and passes them to a route group accessible to regular users.
+- Rental cancellation changes a rental by ID without checking that the authenticated user owns it.
+- Booking writes `total_cost` from the browser rather than the server-calculated availability result.
+- Availability lookup and booking insert are separate operations, which permits race conditions.
+- Cancelled rentals are not filtered from the current date-overlap query.
+- Logout and car deletion are GET routes despite changing state.
+- The contact page submits POST `/contact`, while `routes/web.php` only defines GET `/contact`.
+- Rental show/edit controller actions are stubs.
+- `routes/console.php` schedules `rental:check-status`, but the command declares `rental:update-status`.
+- RentalList references an `updateRentalStatus` function whose implementation is commented out.
+- Some Vue asset URLs contain `127.0.0.1:8000`, which is not portable to deployment.
+- Existing tests are framework examples, not a booking or authorization test suite.
 
-The checked-in environment template defaults to SQLite. In PowerShell, from the project root:
+These findings describe the current inspected source. This documentation update does not fix them.
 
-    Copy-Item .env.example .env
-    php artisan key:generate
-    New-Item -ItemType File -Force database/database.sqlite
-    composer install
-    npm ci
-    php artisan migrate --seed
-    composer run dev
+## 🧰 Technology stack
 
-The Composer development script starts the Laravel server, queue listener, log viewer, and Vite process. Open the local URL shown in the terminal.
+| Technology | Purpose |
+|---|---|
+| PHP 8.2+ | Backend runtime |
+| Laravel 12 | Routing, authentication, validation, persistence and application framework |
+| Inertia Laravel 2 | Laravel-to-Vue page bridge |
+| Vue 3 | Frontend pages and components |
+| Vite 6 | Frontend development/build tooling |
+| Eloquent ORM | Database models and relations |
+| SQLite (default local template) | Local database configuration |
+| MySQL/MariaDB compatibility | Alternative relational database configuration |
+| Bootstrap 5 | UI framework dependency |
+| Tailwind CSS Vite plugin | Styling/build dependency |
+| Axios | HTTP client dependency |
+| Day.js | Date utilities dependency |
+| PHPUnit 11 | Automated test framework |
+| Composer | PHP dependency management and scripts |
+| npm | JavaScript dependency management |
 
-The project seeder contains a hard-coded admin demo account. Use an isolated local database only; replace the seed credentials and role assignment before sharing the application or using a non-disposable environment. The tracked root-level database file and SQL export are separate artifacts; they are not the default SQLite path in .env.example.
+Exact dependency requirements are declared in [composer.json](composer.json) and [package.json](package.json).
 
-See [Installation](docs/installation.md) for more detail and database alternatives.
+## 🏛️ Architecture
 
-## Useful commands
+~~~mermaid
+flowchart TD
+ A[Browser] --> B[Laravel Web Route]
+ B --> C[Web Middleware: Session / CSRF / Inertia]
+ C --> D[Controller]
+ D --> E[Eloquent Model]
+ E --> F[(Configured SQL Database)]
+ F --> E
+ D --> G[Inertia Response + Page Props]
+ G --> H[Vue 3 Page Component]
+ H --> A
+ D --> I[Mail / Filesystem / Console Services]
+~~~
 
-- composer run dev starts the configured local development processes.
-- php artisan migrate applies schema migrations.
-- php artisan test runs the PHPUnit suites.
-- ./vendor/bin/pint formats PHP source.
-- npm run dev starts Vite only.
-- npm run build creates the frontend production assets.
-- npm run preview is not defined in package.json.
+### Application data flow
 
-The current tests are Laravel scaffold examples and do not cover the car, rental, role, or security flows.
+~~~mermaid
+flowchart LR
+ Visitor[Visitor] --> Auth[Signup / Login]
+ Auth --> Session[Laravel Session]
+ Session --> Browse[Browse Cars]
+ Browse --> Availability[Check Dates]
+ Availability --> Booking[Create Rental]
+ Booking --> RentalDB[(Rentals Table)]
+ Booking --> Mail[Booking Confirmation]
+ Admin[Administrator] --> Manage[Manage Cars / Users / Rental Status]
+ Manage --> DB[(Application Database)]
+~~~
 
-## Main routes
+See [Architecture](docs/architecture.md) and [Diagrams](docs/diagrams/README.md) for detailed boundaries and known mismatches.
 
-| Method and path | Purpose | Access in current route file |
-| --- | --- | --- |
-| GET / | Home page | Public |
-| GET /about | About page | Public |
-| GET /contact | Contact form page | Public |
-| GET and POST /login | Login page and authentication | Public |
-| GET and POST /user/create | Signup page and account creation | Public; role is submitted by the client |
-| GET /dashboard | Dashboard and user/car data | Authenticated user or admin |
-| GET /listCars and car admin paths | Car administration | Admin |
-| GET /rentals/create and /cars/{car}/book | Rental selection and booking form | Authenticated user or admin |
-| POST /check-availability | Date availability and cost response | Authenticated user or admin |
-| POST /cars/{car}/book | Create rental and send confirmation email | Authenticated user or admin |
-| GET /listRentals | Current user's rentals or all rentals for admin | Authenticated user or admin |
-| PUT /rentals/{id}/cancel | Cancel a rental | Authenticated user or admin; ownership is not checked |
-| PUT /rentals/{id}/update-status | Update rental status | User/admin route group; controller also checks admin |
-| GET /user/logout | Sign out | Authenticated user or admin; currently uses GET |
+## 🗂️ Repository structure
 
-The complete route definitions are in routes/web.php. The application uses Laravel web sessions and Inertia page responses rather than a separate JSON API.
+~~~text
+car-rental-vue-laravel-app/
+├── .github/                         # CI, issue forms and PR template
+├── app/
+│   ├── Console/Commands/            # Rental status command
+│   ├── Http/Controllers/            # Auth, car, rental, user and page actions
+│   ├── Http/Middleware/             # Role checks and Inertia shared props
+│   ├── Mail/                        # Booking email classes
+│   ├── Models/                      # User, Car, Rental
+│   └── Notifications/               # Rental status notification
+├── bootstrap/                       # Laravel app/middleware configuration
+├── config/                          # Framework configuration
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+├── docs/                            # Project, API, architecture, security and operations
+├── public/                          # Web root and public assets
+├── resources/
+│   ├── css/
+│   ├── js/Pages/                    # Inertia Vue pages
+│   └── views/                       # Blade root and email templates
+├── routes/                          # Web and console routes
+├── storage/                         # Logs, sessions, cache and runtime files
+├── tests/                           # PHPUnit feature and unit tests
+├── composer.json
+├── package.json
+├── phpunit.xml
+├── vite.config.js
+└── ...
+~~~
 
-## Repository layout
+See [Project Structure](docs/PROJECT_STRUCTURE.md) for file responsibilities.
 
-    app/Http/Controllers/       Laravel page and action controllers
-    app/Http/Middleware/        Inertia props and role middleware
-    app/Models/                  User, Car, and Rental models
-    app/Console/Commands/        Rental status command
-    database/migrations/         Relational schema changes
-    database/seeders/            Local seed data, including a demo admin
-    resources/js/Pages/          Inertia Vue screens
-    resources/views/             Blade root and mail templates
-    routes/web.php               Web routes and access middleware
-    routes/console.php           Scheduled command registration
-    docs/                        Project guides and policies
+## ⚙️ Prerequisites
+- PHP 8.2 or later with required Laravel/PDO extensions.
+- Composer.
+- Node.js and npm.
+- SQLite with PDO SQLite for the default local configuration, or a supported MySQL/MariaDB server.
+- Git and a terminal.
 
-## Security and data
+## 🚀 Local installation
 
-Do not use real account or customer information until the documented CSRF, signup-role, rental-ownership, pricing, database-dump, and seed-account issues are addressed. Do not publish credentials or database rows in issues. Follow [SECURITY.md](SECURITY.md) for private reports.
+### 1. Clone the repository
 
-## Contributing and license
+~~~bash
+git clone https://github.com/Brajesh31/car-rental-vue-laravel-app.git
+cd car-rental-vue-laravel-app
+~~~
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes. This project is distributed under the MIT License; see [LICENSE](LICENSE). Third-party packages and assets remain subject to their own terms.
+### 2. Configure Laravel
 
-Last updated: 2026-11-17 09:39 UTC
+~~~bash
+cp .env.example .env
+composer install
+php artisan key:generate
+~~~
+
+Windows PowerShell alternative: `Copy-Item .env.example .env`.
+
+### 3. Prepare the default SQLite database
+
+The local template selects SQLite at `database/database.sqlite`. Create the file if it does not exist:
+
+~~~bash
+touch database/database.sqlite
+~~~
+
+Do not confuse this file with the tracked root-level `my_car_rental` SQLite snapshot or the `my_car_rental.sql` MariaDB export. Those contain stored records and should not be imported into a fresh or shared environment without reviewing and sanitizing them.
+
+### 4. Apply migrations
+
+~~~bash
+php artisan migrate
+~~~
+
+Do not run the current seeder outside a disposable local database until its hard-coded administrator account and role behavior are corrected.
+
+### 5. Install frontend dependencies
+
+~~~bash
+npm ci
+~~~
+
+### 6. Start development services
+
+~~~bash
+composer run dev
+~~~
+
+The Composer `dev` script starts the Laravel development server, queue listener, Pail log viewer, and Vite. Open the URL printed by Laravel in the terminal.
+
+### 7. Uploaded image storage
+
+~~~bash
+php artisan storage:link
+~~~
+
+Car images use Laravel's public storage disk. Confirm write permissions and public URLs in local testing.
+
+## 🧪 Available commands
+
+| Command | Purpose |
+|---|---|
+| `composer install` | Install PHP dependencies |
+| `npm ci` | Install locked frontend dependencies |
+| `composer run dev` | Start Laravel, queue listener, logs and Vite |
+| `php artisan route:list` | Inspect registered web routes |
+| `php artisan migrate:status` | Inspect migration state |
+| `php artisan migrate` | Apply local migrations |
+| `composer test` | Run Laravel test suite |
+| `php artisan test` | Run PHPUnit via Artisan |
+| `npm run build` | Build frontend assets |
+| `npm run dev` | Start Vite dev server |
+| `./vendor/bin/pint --test` | Check PHP formatting |
+
+These commands are documented, not claimed as executed. The checked-in tests do not yet validate booking correctness, role escalation, CSRF, ownership, mail, or scheduled automation.
+
+## 🔐 Roles and sessions
+
+The app uses Laravel session authentication rather than JWT bearer tokens. The custom `RoleMiddleware` checks the authenticated user's `role` string. The routes use `admin` for user/car management and `user,admin` for dashboard/rental routes.
+
+Frontend visibility is not authorization. Every backend read/write must enforce role and record ownership, and all state-changing web requests must use CSRF protection.
+
+## 📅 Rental workflow
+
+~~~mermaid
+flowchart TD
+ A[User selects car] --> B[Choose start/end dates]
+ B --> C[POST availability check]
+ C --> D{Conflicting rental?}
+ D -->|Yes| E[Show unavailable]
+ D -->|No| F[Show calculated estimate]
+ F --> G[Submit booking]
+ G --> H[Re-check availability]
+ H --> I[Create rental]
+ I --> J[Send confirmation email]
+ J --> K[Rental list]
+~~~
+
+The current flow has two critical defects: the final booking persists the client-supplied `total_cost`, and the availability query and insert are not atomic. Fix and test those before using this workflow with real reservations.
+
+## 📚 Documentation
+
+The [documentation hub](docs/README.md) contains project overview, feature inventory, architecture diagrams, route/API reference, OpenAPI draft, database data dictionary, security review, testing strategy, deployment, operations, templates, runbooks, and decision records.
+
+## 🛡️ Security and privacy
+
+Before deployment, address the findings in [Security Review](docs/SECURITY_REVIEW.md), especially server-side role assignment, CSRF protection, dashboard data exposure, rental ownership, price tampering, and booking concurrency. Review tracked DB snapshots and the seeder's hard-coded administrator account. Do not publish `.env`, session cookies, passwords, private customer records, or booking addresses.
+
+See [SECURITY.md](SECURITY.md) for private reporting instructions.
+
+## 🗺️ Roadmap
+
+Priority order: fix role escalation and CSRF; restrict dashboard data; enforce rental ownership; calculate price server-side; make date reservations concurrency-safe; fix GET mutations; repair scheduler naming; complete missing contact/rental actions; add feature tests; remove local-only asset URLs; improve operations and monitoring.
+
+See [ROADMAP.md](ROADMAP.md) for the detailed project roadmap.
+
+## 🤝 Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md), follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and use the issue and pull request templates. Report vulnerabilities privately.
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE). Third-party dependencies and media retain their respective licenses/terms.
+
+## 👤 Maintainer
+
+Maintained by **Brajesh Kumar**.
+
+<p align="center">Built with Laravel, Vue, and Inertia. 🚗</p>
+
+Last updated: 2026-11-17
