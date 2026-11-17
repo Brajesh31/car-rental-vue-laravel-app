@@ -33,3 +33,11 @@ yarn-error.log
 /.zed
 .DS_Store
 Thumbs.db
+
+# Local database exports and development databases (never commit populated data)
+/*.sqlite
+/*.sqlite-*
+/*.sqlite3
+/*.db
+/my_car_rental
+/my_car_rental.sql
