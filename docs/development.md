@@ -58,3 +58,27 @@ When changing routes, mail, scheduled work, database structure, security behavio
 ## Configuration and secrets
 
 Copy .env.example to an untracked .env for local settings. Never commit populated environment files, mail credentials, APP_KEY values, or user/session records. Frontend assets are public to the browser and must not contain server secrets.
+
+## Visual contribution lifecycle
+
+~~~mermaid
+flowchart TD
+ A[Pick issue] --> B[Inspect route/controller/model]
+ B --> C[Define acceptance criteria]
+ C --> D[Review auth, CSRF and data impact]
+ D --> E[Implement focused change]
+ E --> F[Add feature and negative tests]
+ F --> G[Run PHP tests and Vite build]
+ G --> H[Update API, database and security docs]
+ H --> I[Open pull request]
+~~~
+
+## Critical implementation checks
+- Public signup must not accept elevated roles from the request.
+- Restore CSRF validation and provide tokens to custom fetch requests.
+- Scope dashboard data by actor role.
+- Enforce rental ownership before showing/editing/cancelling a rental.
+- Compute booking total on the server and protect concurrent overlapping reservations.
+- Use non-GET methods for logout and deletion.
+- Align scheduler invocation with the actual Artisan command signature.
+- Remove hard-coded localhost URLs from media rendering.
