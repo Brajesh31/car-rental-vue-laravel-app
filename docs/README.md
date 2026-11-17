@@ -56,3 +56,27 @@ Technical guides for SwiftRide, a Laravel 12 + Inertia 2 + Vue 3 car-rental web 
 ## Documentation accuracy rules
 
 Distinguish current behavior from proposed behavior. Do not call a booking paid unless a payment integration exists. Do not claim email was delivered merely because a message was logged. Do not say scheduler automation works until the command signature and schedule are aligned. A passing framework example test is not proof of booking, authorization, or concurrency correctness.
+
+## Newly added detailed resources
+- [Project overview](PROJECT_OVERVIEW.md)
+- [Feature inventory](FEATURES.md)
+- [Project structure](PROJECT_STRUCTURE.md)
+- [Testing strategy](TESTING.md)
+- [Security findings](SECURITY_REVIEW.md)
+- [Security model](SECURITY.md)
+- [Operations](OPERATIONS.md)
+- [Release process](RELEASE_PROCESS.md)
+- [System context](diagrams/system-context.md)
+- [Authentication and roles](diagrams/authentication-role-flow.md)
+- [Booking sequence](diagrams/rental-booking-sequence.md)
+- [Rental lifecycle](diagrams/rental-lifecycle.md)
+- [Deployment target topology](diagrams/deployment-topology.md)
+- [Contribution workflow](diagrams/contribution-flow.md)
+- [Database data dictionary](database/README.md)
+- [Data retention/privacy](database/retention-and-privacy.md)
+- [OpenAPI draft](api/openapi.yaml)
+- [Postman collection](api/examples/car-rental.postman_collection.json)
+- [Engineering templates](templates/README.md)
+- [Operational runbooks](runbooks/README.md)
+- [ADRs](decisions/README.md)
+- [Asset guidance](assets/README.md)
