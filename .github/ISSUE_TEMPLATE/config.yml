@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation hub
+    url: https://github.com/Brajesh31/car-rental-vue-laravel-app/tree/main/docs
+    about: Review installation, booking, architecture, and security guides.
+  - name: 🔐 Private security report
+    url: https://github.com/Brajesh31/car-rental-vue-laravel-app/security/advisories/new
+    about: Report security vulnerabilities privately. Do not publish credentials or personal data.
