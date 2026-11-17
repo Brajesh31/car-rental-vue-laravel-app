@@ -1,12 +1,19 @@
-# 🗺️ Architecture and Workflow Diagrams
+# 🗺️ Diagram Index
 
-| Diagram | What it explains |
+| Diagram | Purpose |
 |---|---|
-| [System context](system-context.md) | Browser, Laravel, Inertia/Vue, database and external services |
-| [Authentication and role flow](authentication-role-flow.md) | Session login and role middleware |
-| [Rental booking sequence](rental-booking-sequence.md) | Availability check, price, persistence, mail |
-| [Rental lifecycle](rental-lifecycle.md) | Current statuses and scheduled transitions |
-| [Deployment topology](deployment-topology.md) | Proposed production topology, not an existing deployment |
-| [Contribution workflow](contribution-flow.md) | Review and test expectations |
+| [System context](system-context.md) | Actors, system boundary and external services |
+| [Authentication and roles](authentication-role-flow.md) | Authentication and role checks |
+| [Booking sequence](rental-booking-sequence.md) | Booking interaction sequence |
+| [Rental lifecycle](rental-lifecycle.md) | Rental lifecycle overview |
+| [Booking state machine](booking-state-machine.md) | Proposed explicit status transitions |
+| [Entity relationship](entity-relationship.md) | Conceptual users/cars/rentals model |
+| [Deployment topology](deployment-topology.md) | Runtime deployment shape |
+| [Contribution flow](contribution-flow.md) | Contributor workflow |
 
-These are explanatory diagrams based on inspected source. Proposed deployment components are marked as target architecture, not implemented infrastructure.
+## SVG diagrams
+- [Architecture overview](../assets/architecture-overview.svg)
+- [Booking flow](../assets/booking-flow.svg)
+- [Rental lifecycle](../assets/rental-lifecycle.svg)
+
+Diagrams are conceptual unless explicitly marked as verified against code and migrations. Keep Mermaid sources alongside visual assets and update both when architecture changes.
