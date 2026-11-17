@@ -1,0 +1,58 @@
+name: 🐛 Bug report
+description: Report a reproducible issue in the car rental application.
+title: '[BUG]: '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include session cookies, APP_KEY, passwords, customer records, or private booking addresses. Report security issues privately.
+  - type: input
+    id: commit
+    attributes:
+      label: Commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Authentication and signup
+        - Roles and authorization
+        - CSRF
+        - Car catalogue
+        - Car image upload
+        - Availability and booking
+        - Rental cancellation/status
+        - Mail and notifications
+        - Scheduler and queue
+        - Database/migrations
+        - Vue/Inertia frontend
+        - Build/deployment
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and sanitized evidence
+      description: PHP, Laravel, Node, DB driver, browser, redacted logs only.
+    validations:
+      required: true
