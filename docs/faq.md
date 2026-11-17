@@ -47,3 +47,11 @@ No. The two checked-in tests are framework examples and do not exercise the rent
 ## How should I report a security issue?
 
 Use the private reporting process in ../SECURITY.md. Do not include database rows, passwords, session IDs, or tokens in public issues.
+
+## What is documented in this repository?
+
+See [docs/README.md](README.md) for the documentation hub, API draft, system diagrams, database references, release process, security review, templates, and operational runbooks.
+
+## Is there a payment feature?
+
+No payment gateway or payment record model was found in the inspected application. The project documents car rental booking and email confirmation, not an integrated payment workflow.
