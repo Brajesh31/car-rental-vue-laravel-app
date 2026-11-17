@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+<title id="title">Rental booking workflow</title><desc id="desc">Customer selects a car and dates, server validates, checks availability, calculates price, stores rental and sends notification.</desc>
+<rect width="1200" height="420" rx="24" fill="#0f172a"/><text x="55" y="60" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700">Rental Booking Workflow</text>
+<g font-family="Arial,sans-serif" text-anchor="middle"><rect x="50" y="150" width="170" height="110" rx="14" fill="#1d4ed8"/><text x="135" y="195" fill="#fff" font-size="21">Select car</text><text x="135" y="225" fill="#dbeafe" font-size="16">and dates</text>
+<rect x="280" y="150" width="170" height="110" rx="14" fill="#0f766e"/><text x="365" y="195" fill="#fff" font-size="21">Validate</text><text x="365" y="225" fill="#ccfbf1" font-size="16">server-side</text>
+<rect x="510" y="150" width="170" height="110" rx="14" fill="#a16207"/><text x="595" y="195" fill="#fff" font-size="21">Check</text><text x="595" y="225" fill="#fef3c7" font-size="16">availability</text>
+<rect x="740" y="150" width="170" height="110" rx="14" fill="#6d28d9"/><text x="825" y="195" fill="#fff" font-size="21">Calculate</text><text x="825" y="225" fill="#ede9fe" font-size="16">trusted price</text>
+<rect x="970" y="150" width="180" height="110" rx="14" fill="#166534"/><text x="1060" y="195" fill="#fff" font-size="21">Persist</text><text x="1060" y="225" fill="#dcfce7" font-size="16">and notify</text></g>
+<g stroke="#cbd5e1" stroke-width="4" fill="none"><path d="M220 205H280M450 205H510M680 205H740M910 205H970"/></g><g fill="#cbd5e1"><path d="M270 195l12 10-12 10zM500 195l12 10-12 10zM730 195l12 10-12 10zM960 195l12 10-12 10z"/></g>
+<text x="55" y="330" fill="#fca5a5" font-family="Arial,sans-serif" font-size="18">Required invariant: availability check + booking write must be atomic.</text><text x="55" y="365" fill="#94a3b8" font-family="Arial,sans-serif" font-size="16">Conceptual target workflow, not proof that concurrency protection currently exists.</text></svg>
