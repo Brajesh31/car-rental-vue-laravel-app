@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+<title id="title">Car rental application architecture</title><desc id="desc">Browser connects to Laravel application, which connects to database, queue and mail provider. Vue and Inertia power the user interface.</desc>
+<rect width="1200" height="560" rx="28" fill="#0b1220"/>
+<text x="60" y="70" fill="#fff" font-family="Arial,sans-serif" font-size="30" font-weight="700">Car Rental Application Architecture</text>
+<g font-family="Arial,sans-serif" text-anchor="middle">
+<rect x="70" y="190" width="230" height="150" rx="18" fill="#1e3a8a"/><text x="185" y="250" fill="#fff" font-size="25" font-weight="700">Browser</text><text x="185" y="288" fill="#dbeafe" font-size="18">Vue 3 + Inertia</text>
+<rect x="390" y="190" width="250" height="150" rx="18" fill="#166534"/><text x="515" y="250" fill="#fff" font-size="25" font-weight="700">Laravel 12</text><text x="515" y="288" fill="#dcfce7" font-size="18">Routes • Auth • Domain</text>
+<rect x="760" y="95" width="300" height="125" rx="18" fill="#7c2d12"/><text x="910" y="148" fill="#fff" font-size="24" font-weight="700">Relational DB</text><text x="910" y="182" fill="#ffedd5" font-size="17">Users • Cars • Rentals</text>
+<rect x="760" y="270" width="300" height="110" rx="18" fill="#581c87"/><text x="910" y="315" fill="#fff" font-size="24" font-weight="700">Queue Worker</text><text x="910" y="347" fill="#f3e8ff" font-size="17">Deferred notifications</text>
+<rect x="760" y="430" width="300" height="85" rx="18" fill="#334155"/><text x="910" y="482" fill="#fff" font-size="22" font-weight="700">Mail Provider</text>
+</g>
+<g stroke="#cbd5e1" stroke-width="4" fill="none" stroke-linecap="round"><path d="M300 265H390"/><path d="M640 230L760 160"/><path d="M640 285L760 325"/><path d="M910 380V430"/></g>
+<g fill="#cbd5e1"><path d="M380 255l12 10-12 10z"/><path d="M748 151l15 3-8 13z"/><path d="M748 315l12 10-12 10z"/><path d="M900 420l10 12 10-12z"/></g>
+<text x="70" y="510" fill="#94a3b8" font-family="Arial,sans-serif" font-size="16">Conceptual view. Confirm runtime services and queue configuration for each deployment.</text>
+</svg>
