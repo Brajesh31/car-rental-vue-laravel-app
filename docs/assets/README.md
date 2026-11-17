@@ -1,13 +1,20 @@
 # 🖼️ Documentation Assets
 
-Store project-owned diagrams, sanitized screenshots, and design references here.
+This directory stores source-controlled diagrams and project documentation artwork.
 
-## Safe asset rules
-- Do not include real customer information, session identifiers, email addresses, licence documents, or private booking details.
-- Redact browser chrome, account names, URLs with tokens, and logs before publishing a screenshot.
-- Record source and permissions for third-party imagery.
-- Prefer editable Mermaid source for architecture diagrams.
-- Provide alt text when embedding images.
-- Do not claim a conceptual illustration is a production screenshot.
+## Asset policy
+- Prefer editable SVG or Mermaid source.
+- Use only original, licensed or explicitly permitted imagery.
+- Record source, creator, license and modifications for non-original assets.
+- Provide alt text in the document that embeds each image.
+- Optimize image size and avoid customer information.
+- Never add screenshots containing secrets, emails, tokens or personal records.
 
-Current editable system diagrams live in [../diagrams/](../diagrams/).
+## Original SVG assets
+| File | Purpose |
+|---|---|
+| architecture-overview.svg | Browser, Laravel, database, queue and mail boundaries |
+| booking-flow.svg | Intended booking workflow and atomicity reminder |
+| rental-lifecycle.svg | Illustrative rental state transitions |
+
+These are original vector diagrams created for this repository. They are conceptual diagrams, not evidence that every depicted integration is currently active.
